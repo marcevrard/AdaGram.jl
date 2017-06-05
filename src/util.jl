@@ -82,7 +82,7 @@ function write_word2vec(path::AbstractString, vm::VectorModel, dict::Dictionary)
 	close(fout)
 end
 
-function write_word2vec_all(path::AbstractString, vm::VectorModel, dict::Dictionary)
+function write_word2vec_all_senses(path::AbstractString, vm::VectorModel, dict::Dictionary)
   	fout = open(path, "w")
   	sense_prob = zeros(T(vm))
   	write(fout, "$(V(vm)) $(T(vm)) $(M(vm))\n")
@@ -280,4 +280,4 @@ end
 export nearest_neighbors
 export disambiguate
 export pi, write_extended
-export cos_dist, preprocess, read_word2vec, write_word2vec
+export cos_dist, preprocess, read_word2vec, write_word2vec, write_word2vec_all_senses
