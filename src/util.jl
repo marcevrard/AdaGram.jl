@@ -82,6 +82,25 @@ function write_word2vec(path::AbstractString, vm::VectorModel, dict::Dictionary)
 	close(fout)
 end
 
+function write_word2vec_all(path::AbstractString, vm::VectorModel, dict::Dictionary)
+  	fout = open(path, "w")
+  	sense_prob = zeros(T(vm))
+  	write(fout, "$(V(vm)) $(T(vm)) $(M(vm))\n")
+  	for v in 1:V(vm)
+  	  	write(fout, "$(dict.id2word[v])\n")
+  	  	expected_pi!(sense_prob, vm, v)
+  	  	for k in 1:T(vm)
+  	  	  	if sense_prob[k] < 1e-3 continue end
+  	  	  	write(fout, "$k $(sense_prob[k]) ")
+  	  	  	for i in 1:M(vm)
+  	  	  	  	write(fout, vm.In[i, k, v])
+  	  	  	end
+  	  	  	write(fout, "\n")
+  	  	end
+  	end
+  	close(fout)
+end
+
 function finalize!(vm::VectorModel)
 	vm.frequencies = sdata(vm.frequencies)
 	vm.In = sdata(vm.In)
@@ -250,7 +269,7 @@ function disambiguate{Tw <: Integer}(vm::VectorModel, x::Tw,
 	end
 
 	exp_normalize!(z)
-	
+
 	return z
 end
 
