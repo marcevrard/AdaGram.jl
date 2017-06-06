@@ -90,7 +90,7 @@ function write_word2vec_all_senses(path::AbstractString, vm::VectorModel, dict::
   	  	write(fout, "$(dict.id2word[v])\n")
   	  	expected_pi!(sense_prob, vm, v)
   	  	for k in 1:T(vm)
-  	  	  	if sense_prob[k] < 1e-3 continue end
+  	  	  	# if sense_prob[k] < 1e-3 continue end
   	  	  	write(fout, "$k $(sense_prob[k]) ")
   	  	  	for i in 1:M(vm)
   	  	  	  	write(fout, vm.In[i, k, v])
